@@ -3,7 +3,7 @@ const db = require('../configs/database')
 const products = {
   getAll: () => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM history`, (err, result) => {
+      db.query(`SELECT *, history.id AS id FROM history INNER JOIN detailorder ON history.id = detailorder.id_transaction `, (err, result) => {
         if(err){
           reject(new Error(err))
         }else{
@@ -11,10 +11,21 @@ const products = {
         }
       })
     })
-  },insert: (data) => {
+  },insertMaster: (data) => {
     return new Promise((resolve, reject) => {
-      db.query(`INSERT INTO history (cashier, orders, amount) 
-      VALUES ('${data.cashier}','${data.orders}','${data.amount}')`, (err, result) => {
+      db.query(`INSERT INTO history (invoice,cashier,  amount) 
+      VALUES ('${data.invoice}','${data.cashier}','${data.amount}')`, (err, result) => {
+        if(err){
+          reject(new Error(err))
+        }else{
+          resolve(result)
+        }
+      })
+    })
+  },
+  insertDetail: (data) => {
+    return new Promise((resolve, reject) => {
+      db.query(`INSERT INTO detailorder SET ?`, data, (err, result) => {
         if(err){
           reject(new Error(err))
         }else{
@@ -39,9 +50,9 @@ const products = {
       })
     })
   },
-  destroy: (invoices) => {
+  destroy: (id) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM history WHERE invoices='${invoices}'`, (err, result) => {
+      db.query(`DELETE FROM history WHERE id='${id}'`, (err, result) => {
         if(err){
           reject(err)
         }else{

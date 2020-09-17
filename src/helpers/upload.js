@@ -10,7 +10,15 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({
-    storage
+    storage,
+    limits: {fileSize: 10000000},
+    fileFilter(req, file, callback){
+        if (file.originalname.match(/\.(jpg|jpeg|png)\b/)) {
+            callback(null, true)
+        } else  {
+            callback('Error type file', null )
+        }
+    }
 })
 
 module.exports = upload
