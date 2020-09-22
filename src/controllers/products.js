@@ -117,20 +117,26 @@ const products = {
       });
   },
   updateDetail: (req, res) => {
-    const id = req.params.id;
-    const data = req.body;
-    data.image = !req.file ? "" : req.file.filename;
-    console.log(data);
-    // console.log(data.image)
-    productsModel
-      .updateDetail(data, id)
-      .then((result) => {
-        redisClient.del("products");
-        success(res, result, "Update data success");
-      })
-      .catch((err) => {
-        failed(res, [], err.message);
-      });
+    upload.single("image")(req, res, (err) => {
+      if (err) {
+        failed(res, [], err);
+      } else {
+        const id = req.params.id;
+        const data = req.body;
+        data.image = !req.file ? "" : req.file.filename;
+        console.log(data);
+        // console.log(data.image)
+        productsModel
+          .updateDetail(data, id)
+          .then((result) => {
+            redisClient.del("products");
+            success(res, result, "Update data success");
+          })
+          .catch((err) => {
+            failed(res, [], err.message);
+          });
+      }
+    });
   },
 };
 

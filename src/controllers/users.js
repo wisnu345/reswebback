@@ -41,7 +41,7 @@ const users = {
                 email: data.email,
               },
               secretkey,
-              { expiresIn: 360 },
+              { expiresIn: 36000000 },
               (err, token) => {
                 if (err) {
                   console.log(err);
@@ -68,9 +68,12 @@ const users = {
               }
             );
           } else {
-            failed(res, [], "Email/Password salah");
+            failed(res, [], "Password salah");
           }
         }
+      })
+      .catch((err) => {
+        failed(res, [], 'Email not registered');
       })
   },
   regenerateToken: async (req, res) => {
