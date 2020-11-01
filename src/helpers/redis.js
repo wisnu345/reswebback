@@ -32,7 +32,7 @@ module.exports = {
         const offset = start === 0 ? limit : start * limit;
 
         const sortField = !req.query.orderby ? "id" : req.query.orderby;
-        const typeSort = !req.query.typeSort ? "asc" : req.query.typeSort;
+        const typeSort = !req.query.typesort ? "asc" : req.query.typesort;
 
         const outputSort = _.orderBy(outputsearch, [sortField], [typeSort]);
         // console.log(_.orderBy)

@@ -6,7 +6,7 @@ const products = {
   getAll: (name, typesort, limit, offset,order) => {
     console.log(order)
     return new Promise((resolve, reject) => {
-      db.query(`SELECT products.id AS product_id, product_name, product_price, category_id, image, category_name, (SELECT COUNT (*) from products) AS count FROM products INNER JOIN category ON products.category_id = category.id WHERE product_name LIKE '%${name}%' ORDER BY ${order} ${typesort} LIMIT ${limit} OFFSET ${offset}`, (err, result) => {
+      db.query(`SELECT products.id AS product_id, product_name, product_price, category_id, image, category_name, (SELECT COUNT (*) from products) AS count FROM products INNER JOIN category ON products.category_id = category.id WHERE product_name LIKE '%${name}%' ORDER BY product_price ${typesort} LIMIT ${limit} OFFSET ${offset}`, (err, result) => {
         if(err){
           reject(new Error(err))
         }else{

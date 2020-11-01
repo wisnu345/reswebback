@@ -11,6 +11,17 @@ const products = {
         }
       })
     })
+  },
+  getHistory: () => {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * from history`, (err, result) => {
+        if(err){
+          reject(new Error(err))
+        }else{
+          resolve(result)
+        }
+      })
+    })
   },insertMaster: (data) => {
     return new Promise((resolve, reject) => {
       db.query(`INSERT INTO history (invoice,cashier,  amount) 
